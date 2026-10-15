@@ -204,13 +204,13 @@ function RoomTimeline() {
       <aside className="frf-rail" aria-label="Room lookup">
         <fieldset className="frf-field">
           <legend className="frf-label">Block</legend>
-          <div className="frf-chips">{Object.keys(BLOCKS).map((b) => <Chip key={b} on={block === b} onClick={() => { setBlock(b); setNum(""); }}>{b}</Chip>)}</div>
+          <div className="frf-days">{Object.keys(BLOCKS).map((b) => <Chip key={b} on={block === b} onClick={() => { setBlock(b); setNum(""); }}>{b}</Chip>)}</div>
         </fieldset>
         <div className="frf-field">
           <label className="frf-label" htmlFor="frf-room">Room number</label>
           <input id="frf-room" className="frf-input" value={num} placeholder="e.g. 203" autoComplete="off"
             onChange={(e) => onNum(e.target.value)} />
-          <div className="frf-chips frf-suggest" aria-label={`Rooms in ${block}`}>
+          <div className="frf-suggest" aria-label={`Rooms in ${block}`}>
             {blockRooms.map((r) => {
               const n = r.id.slice(block.length + 1);
               return <button key={r.id} type="button" className={`frf-mini ${room?.id === r.id ? "is-on" : ""}`} onClick={() => setNum(n)}>{n}</button>;
@@ -221,8 +221,8 @@ function RoomTimeline() {
       </aside>
 
       <main className="frf-main" aria-live="polite">
-        {!id && <p className="frf-empty">Pick a block and enter a room number to see when it is free.</p>}
-        {id && !room && <p className="frf-empty">No room <b className="frf-mono">{id}</b> in the data. Check the block and number.</p>}
+        {!id && <div className="frf-empty frf-hero"><p className="frf-herot">Check any room</p><p>Pick a block, then enter or tap a room number to see when it is free.</p></div>}
+        {id && !room && <div className="frf-empty frf-hero"><p className="frf-herot">Room not found</p><p>No room <b className="frf-mono">{id}</b> in the data. Check the block and number.</p></div>}
         {data && (
           <>
             <div className="frf-summary">
@@ -304,7 +304,8 @@ const CSS = `
 .frf-ghost{width:100%;padding:9px 0;font-weight:600;font-size:14px;border-color:var(--line)}
 .frf-input{width:100%;font:600 18px 'JetBrains Mono',monospace;color:var(--navy);background:var(--slate);border:1px solid var(--line);border-radius:10px;padding:10px 12px;text-transform:uppercase}
 .frf-input::placeholder{text-transform:none;font-weight:500;opacity:.5}
-.frf-suggest{margin-top:10px}
+.frf-suggest{margin-top:10px;display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.frf-suggest .frf-mini{padding:8px 0;text-align:center}
 .frf-mini{font:500 12px 'JetBrains Mono',monospace;padding:6px 8px;border-radius:8px}
 .frf-seg{display:grid;grid-template-columns:repeat(3,1fr);background:var(--slate);border-radius:12px;padding:3px;gap:3px}
 .frf-segbtn{padding:8px 0;font-weight:600;font-size:14px;background:transparent}
@@ -332,6 +333,9 @@ const CSS = `
 .is-busy .frf-state{color:var(--busy)}
 .frf-lunch{margin:6px 0 0;padding:6px 16px;border-radius:10px;background:var(--sand);font-size:12px;font-weight:600;color:#6b5a2b;text-align:center}
 .frf-empty{background:var(--card);border-radius:12px;padding:24px;color:var(--muted)}
+.frf-hero{min-height:320px;display:grid;place-content:center;justify-items:center;text-align:center;gap:6px;border:2px dashed var(--line);background:transparent;line-height:1.5}
+.frf-hero p{margin:0;max-width:34ch}
+.frf-herot{font:800 24px 'Bricolage Grotesque',sans-serif;color:var(--navy)}
 @media (max-width:860px){
   .frf-body{grid-template-columns:1fr}
   .frf-rail{position:static}
